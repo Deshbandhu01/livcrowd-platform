@@ -118,3 +118,9 @@ fork -> clone -> create branch -> commit -> push -> pull request
 ---
 
 ⭐ If you like this project, don't forget to star the repo!
+
+## Active Link
+
+'''
+https://livcrwd-platform-v-1.netlify.app/
+'''
