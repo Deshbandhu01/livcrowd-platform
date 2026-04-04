@@ -37,28 +37,13 @@ Livcrwd is a full-stack web application that tracks real-time crowd density and 
 ### Backend
 - Node.js
 - Express.js
-- WebSocket (Socket.io / Native WS)
 
 ### Database
 - MongoDB / PostgreSQL
 
 ---
 
-## 📂 Project Structure
 
-```
-Livcrwd/
-│── client/          # Frontend (React)
-│── server/          # Backend (Node.js)
-│── routes/          # API routes
-│── controllers/     # Logic handling
-│── models/          # Database models
-│── utils/           # Helper functions
-│── config/          # Config files
-│── .env             # Environment variables
-```
-
----
 
 ## ⚡ Installation & Setup
 
@@ -80,23 +65,7 @@ Create a `.env` file in the root:
 
 ```env
 PORT=5000
-MONGO_URI=your_database_url
-JWT_SECRET=your_secret_key
-```
-
----
-
-## ▶️ Run the App
-
-### Start Backend
-```bash
-npm run server
-```
-
-### Start Frontend
-```bash
-cd client
-npm run dev
+GEMINI_API= ....
 ```
 
 ---
@@ -145,18 +114,6 @@ npm run dev
 fork -> clone -> create branch -> commit -> push -> pull request
 ```
 
----
-
-## 📜 License
-This project is licensed under the MIT License.
-
----
-
-## 👨‍💻 Author
-
-**Deshbandhu Badhauliya**  
-GitHub: https://github.com/Deshbandhu01  
-LinkedIn: https://www.linkedin.com/in/deshbandhu-badhauliya-345333267  
 
 ---
 
