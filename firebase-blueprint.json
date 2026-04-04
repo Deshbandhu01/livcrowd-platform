@@ -1,0 +1,75 @@
+{
+  "entities": {
+    "Location": {
+      "title": "Location",
+      "description": "A place tracked for crowd density.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Name of the location" },
+        "description": { "type": "string", "description": "Short description" },
+        "capacity": { "type": "integer", "description": "Maximum capacity" },
+        "currentCrowd": { "type": "integer", "description": "Current number of people" },
+        "baseWaitTimePerPerson": { "type": "number", "description": "Minutes per person in queue" },
+        "trend": { "type": "string", "enum": ["INCREASING", "DECREASING", "STABLE"] },
+        "lastUpdated": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "capacity", "currentCrowd"]
+    },
+    "CrowdEvent": {
+      "title": "CrowdEvent",
+      "description": "A snapshot of crowd data at a point in time.",
+      "type": "object",
+      "properties": {
+        "locationId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "crowdCount": { "type": "integer" }
+      },
+      "required": ["locationId", "timestamp", "crowdCount"]
+    },
+    "User": {
+      "title": "User",
+      "description": "Application user profile.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "bio": { "type": "string" },
+        "avatarUrl": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "user"] }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "SearchHistory": {
+      "title": "SearchHistory",
+      "description": "Record of a user's search query.",
+      "type": "object",
+      "properties": {
+        "query": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "userId": { "type": "string" },
+        "status": { "type": "string", "enum": ["found", "not_found"] }
+      },
+      "required": ["query", "timestamp", "userId", "status"]
+    }
+  },
+  "firestore": {
+    "/locations/{locationId}": {
+      "schema": "Location",
+      "description": "Main location data"
+    },
+    "/locations/{locationId}/events/{eventId}": {
+      "schema": "CrowdEvent",
+      "description": "Historical crowd snapshots for trends"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and roles"
+    },
+    "/searchHistory/{historyId}": {
+      "schema": "SearchHistory",
+      "description": "User search logs"
+    }
+  }
+}
