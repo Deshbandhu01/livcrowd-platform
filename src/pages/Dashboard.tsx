@@ -34,20 +34,21 @@ export const Dashboard: React.FC = () => {
         const path = 'locations';
         await addDoc(collection(db, path), {
           ...details,
-          capacity: Math.floor(details.capacity), // Ensure integer
-          currentCrowd: Math.floor(details.capacity * 0.3), // Start with 30% crowd
+          capacity: Math.floor(details.capacity) || 500,
+          currentCrowd: Math.floor((details.capacity || 500) * 0.3),
           trend: 'STABLE',
           baseWaitTimePerPerson: 0.5,
           lastUpdated: serverTimestamp()
         });
         setSearch('');
-        alert(`Successfully added ${details.name}!`);
+        alert(`✅ Successfully added "${details.name}" to the dashboard!`);
       } else {
-        alert("Sorry, I couldn't find enough details for this location.");
+        alert(`⚠️ Could not fetch details for "${search}".\n\nThis may be a temporary API issue. Please:\n1. Check your browser Console (F12) for the exact error\n2. Try again in a few seconds\n3. Try a more specific name (e.g. "Goa Beach" instead of "Goa")`);
       }
     } catch (err) {
       console.error("Auto-create error:", err);
-      alert("Failed to create location. Please try again.");
+      const msg = err instanceof Error ? err.message : String(err);
+      alert(`❌ Failed to create location.\n\n${msg}`);
     } finally {
       setIsCreating(false);
     }
