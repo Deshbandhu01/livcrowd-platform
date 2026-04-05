@@ -5,3 +5,6 @@ coverage/
 .DS_Store
 *.log
 .env*
+
+# Local Netlify folder
+.netlify

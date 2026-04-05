@@ -35,25 +35,40 @@ export const Admin: React.FC = () => {
 
   const syncRealtimeData = async () => {
     if (locations.length === 0 || isSyncing) return;
-    
+
     setIsSyncing(true);
     setSyncProgress('Starting sync...');
+    let successCount = 0;
+    let failCount = 0;
+
     try {
-      for (const loc of locations) {
-        setSyncProgress(`Syncing ${loc.name}...`);
+      for (let i = 0; i < locations.length; i++) {
+        const loc = locations[i];
+        setSyncProgress(`Syncing ${loc.name}… (${i + 1}/${locations.length})`);
         try {
           const result = await getRealtimeTraffic(loc.name, loc.latitude, loc.longitude);
-          if (result) {
+          if (result?.text) {
             await updateDoc(doc(db, 'locations', loc.id), {
               trafficInfo: result.text.substring(0, 500),
               lastUpdated: serverTimestamp(),
             });
+            successCount++;
           }
         } catch (locErr) {
           console.error(`Error syncing ${loc.name}:`, locErr);
+          failCount++;
+        }
+
+        // ── Rate-limit guard: wait 2 s between API calls ──────────────
+        if (i < locations.length - 1) {
+          await new Promise((res) => setTimeout(res, 2000));
         }
       }
-      alert('Real-time sync complete!');
+      alert(
+        `Sync complete! ✅ ${successCount} updated${
+          failCount > 0 ? `, ⚠️ ${failCount} failed (see console)` : ''
+        }`
+      );
     } catch (err) {
       console.error('Sync error:', err);
       alert(`Sync failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
